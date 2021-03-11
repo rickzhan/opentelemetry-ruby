@@ -87,6 +87,7 @@ describe OpenTelemetry::Exporter::Jaeger::CollectorExporter do
     end
 
     it 'integrates with collector' do
+    begin
       skip unless ENV['TRACING_INTEGRATION_TEST']
       WebMock.disable_net_connect!(allow: 'localhost')
       resource = OpenTelemetry::SDK::Resources::Resource.telemetry_sdk
@@ -96,7 +97,8 @@ describe OpenTelemetry::Exporter::Jaeger::CollectorExporter do
     ensure
       WebMock.disable_net_connect!
     end
-
+    end
+    
     it 'returns FAILURE when shutdown' do
       exporter.shutdown
       result = exporter.export(nil)

@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
                ::Dir.glob('*.md') +
                ['LICENSE', '.yardopts']
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 2.4.3'
 
   spec.add_dependency 'google-protobuf', '~> 3.7'
   spec.add_dependency 'opentelemetry-api', '~> 0.15.0'

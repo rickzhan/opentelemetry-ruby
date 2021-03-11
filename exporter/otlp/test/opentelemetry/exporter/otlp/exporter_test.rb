@@ -126,6 +126,7 @@ describe OpenTelemetry::Exporter::OTLP::Exporter do
     end
 
     it 'returns TIMEOUT on timeout after retrying' do
+      begin
       stub_request(:post, 'https://localhost:4317/v1/traces').to_timeout.then.to_raise('this should not be reached')
       span_data = create_span_data
 
@@ -141,6 +142,7 @@ describe OpenTelemetry::Exporter::OTLP::Exporter do
       end
     ensure
       @retry_count = 0
+    end
     end
 
     it 'returns FAILURE when shutdown' do

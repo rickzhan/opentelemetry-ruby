@@ -131,6 +131,7 @@ module OpenTelemetry
           timeout ||= @timeout
           start_time = Time.now
           around_request do # rubocop:disable Metrics/BlockLength
+            begin
             request = Net::HTTP::Post.new(@path)
             request.body = if @compression == 'gzip'
                              request.add_field('Content-Encoding', 'gzip')
@@ -181,6 +182,8 @@ module OpenTelemetry
             retry if backoff?(retry_count: retry_count += 1, reason: 'socket_error')
             return FAILURE
           end
+          end
+
         ensure
           # Reset timeouts to defaults for the next call.
           @http.open_timeout = @timeout

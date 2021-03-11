@@ -28,11 +28,13 @@ module OpenTelemetry
           def export(spans, timeout: nil)
             start_time = Time.now
             results = @span_exporters.map do |span_exporter|
+            begin
               span_exporter.export(spans, timeout: OpenTelemetry::Common::Utilities.maybe_timeout(timeout, start_time))
             rescue => e # rubocop:disable Style/RescueStandardError
               OpenTelemetry.logger.warn("exception raised by export - #{e}")
               FAILURE
             end
+          end
             results.uniq.max || SUCCESS
           end
 

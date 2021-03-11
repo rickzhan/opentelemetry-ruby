@@ -260,6 +260,7 @@ module OpenTelemetry
         @options ||= {}
         user_config ||= {}
         validated_config = @options.each_with_object({}) do |option, h|
+          begin
           option_name = option[:name]
           config_value = user_config[option_name]
 
@@ -280,6 +281,7 @@ module OpenTelemetry
           OpenTelemetry.handle_error(exception: e, message: "Instrumentation #{name} unexpected configuration error")
           h[option_name] = option[:default]
         end
+      end
 
         dropped_config_keys = user_config.keys - validated_config.keys
         OpenTelemetry.logger.warn("Instrumentation #{name} ignored the following unknown configuration options #{dropped_config_keys}") unless dropped_config_keys.empty?
